@@ -255,3 +255,29 @@ func TestSendHitClient(t *testing.T) {
 		t.Errorf("Did not expect error as hit is correct. Got %v", err)
 	}
 }
+
+type FakeDecisionClient struct{}
+
+func (f *FakeDecisionClient) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+	return nil, nil
+}
+
+func TestCreateCustomDecisionClient(t *testing.T) {
+	options := &Options{
+		EnvID:  testEnvID,
+		APIKey: testAPIKey,
+	}
+
+	options.BuildOptions(WithDecisionClient(&FakeDecisionClient{}))
+
+	client, err := Create(options)
+
+	if err != nil {
+		t.Errorf("Error when creating flagship client : %v", err)
+	}
+
+	_, castOK := client.decisionClient.(*FakeDecisionClient)
+	if !castOK {
+		t.Errorf("decision API Client has not been initialized correctly")
+	}
+}

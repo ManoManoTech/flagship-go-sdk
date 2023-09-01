@@ -3,6 +3,7 @@ package client
 import (
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/bucketing"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/cache"
+	"github.com/flagship-io/flagship-go-sdk/v2/pkg/decision"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/decisionapi"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/tracking"
 )
@@ -16,6 +17,7 @@ type Options struct {
 	decisionAPIOptions  []func(*decisionapi.APIClient)
 	cacheManagerOptions []cache.OptionBuilder
 	trackingAPIClient   tracking.APIClientInterface
+	decisionClient      decision.ClientInterface
 }
 
 // OptionBuilder is a func type to set options to the FlagshipOption.
@@ -57,5 +59,12 @@ func WithVisitorCache(options ...cache.OptionBuilder) OptionBuilder {
 func WithTrackingAPIClient(trackingAPIClient tracking.APIClientInterface) OptionBuilder {
 	return func(f *Options) {
 		f.trackingAPIClient = trackingAPIClient
+	}
+}
+
+// WithDecisionClient changes the decision client used by the SDK
+func WithDecisionClient(decisionClient decision.ClientInterface) OptionBuilder {
+	return func(f *Options) {
+		f.decisionClient = decisionClient
 	}
 }

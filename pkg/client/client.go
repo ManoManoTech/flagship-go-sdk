@@ -64,6 +64,7 @@ func Create(f *Options) (*Client, error) {
 		apiKey:            f.APIKey,
 		status:            STATUS_INITIALIZING,
 		trackingAPIClient: f.trackingAPIClient,
+		decisionClient:    f.decisionClient,
 	}
 
 	if len(f.cacheManagerOptions) > 0 {
