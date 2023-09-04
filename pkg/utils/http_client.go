@@ -36,6 +36,7 @@ type HTTPResponse struct {
 
 // HTTPOptions represents the options for the HTTPRequest object
 type HTTPOptions struct {
+	Client  *http.Client
 	Retries int
 	Timeout time.Duration
 	Headers map[string]string
@@ -50,12 +51,17 @@ func NewHTTPClient(baseURL string, options HTTPOptions) *HTTPClient {
 	retries := 1
 	timeout := defaultTimeout
 
+	httpClient := options.Client
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+
 	if options.Retries > 1 {
 		retries = options.Retries
 	}
 
 	if options.Timeout != 0 {
-		timeout = options.Timeout
+		httpClient.Timeout = timeout
 	}
 
 	if options.Headers != nil {
@@ -65,9 +71,7 @@ func NewHTTPClient(baseURL string, options HTTPOptions) *HTTPClient {
 	}
 
 	client := &HTTPClient{
-		client: &http.Client{
-			Timeout: timeout,
-		},
+		client:      httpClient,
 		retries:     retries,
 		baseURL:     baseURL,
 		baseHeaders: headers,

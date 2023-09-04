@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -27,6 +28,7 @@ type APIClient struct {
 	retries           int
 	additionalHeaders map[string]string
 	httpClient        utils.HTTPClientInterface
+	httpClientNative  *http.Client
 }
 
 // APIVersionNumber specifies the version of the Decision API to use
@@ -86,6 +88,12 @@ func AdditionalHeaders(headers map[string]string) func(r *APIClient) {
 	}
 }
 
+func HTTPClient(client *http.Client) func(r *APIClient) {
+	return func(r *APIClient) {
+		r.httpClientNative = client
+	}
+}
+
 // NewAPIClient creates a Decision API client from the environment ID and option builders
 func NewAPIClient(envID string, apiKey string, params ...func(*APIClient)) (*APIClient, error) {
 	res := APIClient{
@@ -119,10 +127,13 @@ func NewAPIClient(envID string, apiKey string, params ...func(*APIClient)) (*API
 		res.timeout = defaultTimeout
 	}
 
-	res.httpClient = utils.NewHTTPClient(res.url, utils.HTTPOptions{
-		Timeout: res.timeout,
-		Headers: headers,
-	})
+	if res.httpClient == nil {
+		res.httpClient = utils.NewHTTPClient(res.url, utils.HTTPOptions{
+			Timeout: res.timeout,
+			Headers: headers,
+			Client:  res.httpClientNative,
+		})
+	}
 
 	return &res, nil
 }

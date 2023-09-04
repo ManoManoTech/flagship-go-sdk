@@ -2,6 +2,7 @@ package bucketing
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/logging"
@@ -23,6 +24,7 @@ type APIClient struct {
 	timeout     time.Duration
 	retries     int
 	httpRequest utils.HTTPClientInterface
+	httpClient  *http.Client
 }
 
 // APIUrl sets http client base URL
@@ -53,6 +55,12 @@ func Retries(retries int) func(r *APIClient) {
 	}
 }
 
+func HTTPClient(client *http.Client) func(r *APIClient) {
+	return func(r *APIClient) {
+		r.httpClient = client
+	}
+}
+
 // NewAPIClient creates a bucketing API Client to poll bucketing infos
 func NewAPIClient(envID string, params ...func(*APIClient)) *APIClient {
 	res := APIClient{
@@ -78,11 +86,14 @@ func NewAPIClient(envID string, params ...func(*APIClient)) *APIClient {
 		res.timeout = defaultTimeout
 	}
 
-	res.httpRequest = utils.NewHTTPClient(res.url, utils.HTTPOptions{
-		Timeout: res.timeout,
-		Headers: headers,
-		Retries: res.retries,
-	})
+	if res.httpRequest == nil {
+		res.httpRequest = utils.NewHTTPClient(res.url, utils.HTTPOptions{
+			Timeout: res.timeout,
+			Headers: headers,
+			Retries: res.retries,
+			Client:  res.httpClient,
+		})
+	}
 
 	return &res
 }
