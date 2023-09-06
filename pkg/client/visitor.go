@@ -38,6 +38,8 @@ type ModificationInfo struct {
 	Value            interface{}
 }
 
+var GenerateAnonymousID = generateAnonymousID
+
 func generateAnonymousID() string {
 	newID := time.Now().Format("20060102030405.000000")
 	return newID[:len(newID)-1]

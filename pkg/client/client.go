@@ -126,7 +126,7 @@ func (c *Client) NewVisitor(visitorID string, context model.Context, options ...
 	id := visitorID
 	var anonymousID *string
 	if id == "" {
-		id = generateAnonymousID()
+		id = GenerateAnonymousID()
 	}
 
 	// Build visitor options
@@ -135,7 +135,7 @@ func (c *Client) NewVisitor(visitorID string, context model.Context, options ...
 
 	// Set anonymous ID is visitor is created already authenticated
 	if visitorOptions.IsAuthenticated {
-		newAnonID := generateAnonymousID()
+		newAnonID := GenerateAnonymousID()
 		anonymousID = &newAnonID
 	}
 
