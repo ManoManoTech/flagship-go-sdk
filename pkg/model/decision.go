@@ -35,6 +35,7 @@ type APIClientResponse struct {
 type Campaign struct {
 	ID               string          `json:"id"`
 	CustomID         string          `json:"-"`
+	Slug             *string         `json:"slug"`
 	VariationGroupID string          `json:"variationGroupId"`
 	Variation        ClientVariation `json:"variation"`
 }
