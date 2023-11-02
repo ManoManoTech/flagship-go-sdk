@@ -155,7 +155,7 @@ func (v *Visitor) SynchronizeModificationsWithContext(ctx context.Context) (err 
 	}
 
 	visitorLogger.Info(fmt.Sprintf("Getting modifications for visitor with id : %s", v.ID))
-	resp, err := v.decisionClient.GetModifications(v.ID, v.AnonymousID, v.Context)
+	resp, err := v.decisionClient.GetModificationsWithContext(ctx, v.ID, v.AnonymousID, v.Context)
 
 	if err != nil {
 		visitorLogger.Error("Error when calling Decision engine: ", err)
