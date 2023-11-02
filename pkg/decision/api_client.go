@@ -1,6 +1,8 @@
 package decision
 
 import (
+	"context"
+
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/decisionapi"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/logging"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/model"
@@ -27,7 +29,12 @@ func NewAPIClient(envID string, apiKey string, params ...func(*decisionapi.APICl
 }
 
 // GetModifications gets modifications from Decision API
-func (r *APIClient) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+func (r *APIClient) GetModifications(visitorID string, anonymousID *string, modelContext model.Context) (*model.APIClientResponse, error) {
+	return r.GetModificationsWithContext(context.Background(), visitorID, anonymousID, modelContext)
+}
+
+// GetModifications gets modifications from Decision API
+func (r *APIClient) GetModificationsWithContext(ctx context.Context, visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
 	apiLogger.Info("Getting modifications from API")
-	return r.decisionAPIClient.GetModifications(visitorID, anonymousID, context)
+	return r.decisionAPIClient.GetModificationsWithContext(ctx, visitorID, anonymousID, context)
 }

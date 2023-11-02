@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"errors"
 	"reflect"
 	"testing"
@@ -259,6 +260,10 @@ func TestSendHitClient(t *testing.T) {
 type FakeDecisionClient struct{}
 
 func (f *FakeDecisionClient) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+	return nil, nil
+}
+
+func (f *FakeDecisionClient) GetModificationsWithContext(ctx context.Context, visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
 	return nil, nil
 }
 

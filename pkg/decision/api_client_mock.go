@@ -1,6 +1,7 @@
 package decision
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -26,7 +27,12 @@ func NewAPIClientMock(envID string, responseMock *model.APIClientResponse, statu
 }
 
 // GetModifications gets modifications from Decision API
-func (r *APIClientMock) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+func (r *APIClientMock) GetModifications(visitorID string, anonymousID *string, modelContext model.Context) (*model.APIClientResponse, error) {
+	return r.GetModificationsWithContext(context.Background(), visitorID, anonymousID, modelContext)
+}
+
+// GetModifications gets modifications from Decision API
+func (r *APIClientMock) GetModificationsWithContext(ctx context.Context, visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
 	_, err := json.Marshal(model.APIClientRequest{
 		VisitorID:   visitorID,
 		AnonymousID: anonymousID,

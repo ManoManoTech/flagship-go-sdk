@@ -1,6 +1,7 @@
 package bucketing
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -120,7 +121,12 @@ func (b *Engine) getCampaignCache(visitorID string) cache.CampaignCacheMap {
 }
 
 // GetModifications gets modifications from Decision API
-func (b *Engine) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+func (b *Engine) GetModifications(visitorID string, anonymousID *string, modelContext model.Context) (*model.APIClientResponse, error) {
+	return b.GetModificationsWithContext(context.Background(), visitorID, anonymousID, modelContext)
+}
+
+// GetModificationsWithContext gets modifications from Decision API
+func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
 
 	if b.getConfig() == nil {
 		logger.Info("Configuration not loaded. Loading it now")

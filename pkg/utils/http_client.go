@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,6 +18,7 @@ var httpLogger = logging.CreateLogger("HTTP Request")
 // HTTPClientInterface represents an interface for HTTP caller
 type HTTPClientInterface interface {
 	Call(path, method string, body []byte, headers map[string]string) (*HTTPResponse, error)
+	CallWithContext(ctx context.Context, path, method string, body []byte, headers map[string]string) (*HTTPResponse, error)
 }
 
 // HTTPClient represents the HTTPClient infos
@@ -82,6 +84,12 @@ func NewHTTPClient(baseURL string, options HTTPOptions) *HTTPClient {
 
 // Call executes request with retries and returns response body, headers, status code and error
 func (r *HTTPClient) Call(path, method string, body []byte, headers map[string]string) (*HTTPResponse, error) {
+	return r.CallWithContext(context.Background(), path, method, body, headers)
+
+}
+
+// CallWithContext executes request with retries and returns response body, headers, status code and error
+func (r *HTTPClient) CallWithContext(ctx context.Context, path, method string, body []byte, headers map[string]string) (*HTTPResponse, error) {
 	url := fmt.Sprintf("%s%s", r.baseURL, path)
 	httpLogger.Debugf("Requesting %s", url)
 
@@ -91,7 +99,7 @@ func (r *HTTPClient) Call(path, method string, body []byte, headers map[string]s
 
 	for i := r.retries; i >= 0; i-- {
 		reader := bytes.NewBuffer(body)
-		req, err = http.NewRequest(method, url, reader)
+		req, err = http.NewRequestWithContext(ctx, method, url, reader)
 		if err != nil {
 			httpLogger.Error(fmt.Sprintf("failed to create new http request %s", url), err)
 			return nil, err

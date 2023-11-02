@@ -1,6 +1,7 @@
 package decisionapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -139,7 +140,12 @@ func NewAPIClient(envID string, apiKey string, params ...func(*APIClient)) (*API
 }
 
 // GetModifications gets modifications from Decision API
-func (r *APIClient) GetModifications(visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
+func (r *APIClient) GetModifications(visitorID string, anonymousID *string, modelContext model.Context) (*model.APIClientResponse, error) {
+	return r.GetModificationsWithContext(context.Background(), visitorID, anonymousID, modelContext)
+}
+
+// GetModificationsWithContext gets modifications from Decision API
+func (r *APIClient) GetModificationsWithContext(ctx context.Context, visitorID string, anonymousID *string, context model.Context) (*model.APIClientResponse, error) {
 	b, err := json.Marshal(model.APIClientRequest{
 		VisitorID:   visitorID,
 		AnonymousID: anonymousID,
@@ -153,7 +159,7 @@ func (r *APIClient) GetModifications(visitorID string, anonymousID *string, cont
 
 	path := fmt.Sprintf("/%s/campaigns?exposeAllKeys=true", r.envID)
 	apiLogger.Infof("Sending call decision API: %s", string(b))
-	response, err := r.httpClient.Call(path, "POST", b, map[string]string{
+	response, err := r.httpClient.CallWithContext(ctx, path, "POST", b, map[string]string{
 		"x-api-key": r.apiKey,
 	})
 

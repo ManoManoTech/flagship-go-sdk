@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -136,6 +137,11 @@ func (v *Visitor) Unauthenticate(newContext map[string]interface{}, sync bool) (
 
 // SynchronizeModifications updates the latest campaigns and modifications for the visitor
 func (v *Visitor) SynchronizeModifications() (err error) {
+	return v.SynchronizeModificationsWithContext(context.Background())
+}
+
+// SynchronizeModificationsWithContext updates the latest campaigns and modifications for the visitor
+func (v *Visitor) SynchronizeModificationsWithContext(ctx context.Context) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = utils.HandleRecovered(r, visitorLogger)
