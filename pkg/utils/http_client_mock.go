@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"context"
 	"net/http"
 )
 
@@ -22,5 +23,10 @@ func NewHTTPClientMock(responseCode int, responseBody []byte, responseHeaders ht
 
 // Call executes request with retries and returns response body, headers, status code and error
 func (r *HTTPClientMock) Call(path, method string, body []byte, headers map[string]string) (*HTTPResponse, error) {
+	return r.CallWithContext(context.Background(), path, method, body, headers)
+}
+
+// CallWithContext executes request with retries and returns response body, headers, status code and error
+func (r *HTTPClientMock) CallWithContext(ctx context.Context, path, method string, body []byte, headers map[string]string) (*HTTPResponse, error) {
 	return &HTTPResponse{r.responseBody, r.responseHeaders, r.responseCode}, nil
 }
