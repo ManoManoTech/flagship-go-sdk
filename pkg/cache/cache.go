@@ -27,6 +27,7 @@ type CampaignCache struct {
 	VariationID      string
 	Activated        bool
 	FlagKeys         []string
+	Type						 string
 }
 
 func (ccmap CampaignCacheMap) ToCommonStruct() *common.VisitorAssignments {
