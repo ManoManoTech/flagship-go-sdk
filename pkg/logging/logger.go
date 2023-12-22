@@ -9,6 +9,7 @@ import (
 var formatter logrus.Formatter
 var output io.Writer
 var level logrus.Level = logrus.WarnLevel
+var hooks = make([]logrus.Hook, 0)
 var loggers map[string]*logrus.Logger = make(map[string]*logrus.Logger)
 
 // SetFormatter sets the log formatter
@@ -33,6 +34,10 @@ func SetOuput(newOutput io.Writer) {
 	for _, l := range loggers {
 		l.SetOutput(newOutput)
 	}
+}
+
+func AddHook(hook logrus.Hook) {
+	hooks = append(hooks, hook)
 }
 
 // LogNameHook is a logrus hook to a
@@ -66,6 +71,10 @@ func CreateLogger(name string) *logrus.Logger {
 	logger.AddHook(&LogNameHook{
 		name: name,
 	})
+
+	for _, hook := range hooks {
+		logger.AddHook(hook)
+	}
 
 	if output != nil {
 		logger.SetOutput(output)
