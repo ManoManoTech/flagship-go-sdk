@@ -29,7 +29,7 @@ func SetLevel(newLevel logrus.Level) {
 }
 
 // SetOutput sets the log level to the given level
-func SetOuput(newOutput io.Writer) {
+func SetOutput(newOutput io.Writer) {
 	output = newOutput
 	for _, l := range loggers {
 		l.SetOutput(newOutput)
@@ -38,6 +38,12 @@ func SetOuput(newOutput io.Writer) {
 
 func AddHook(hook logrus.Hook) {
 	hooks = append(hooks, hook)
+}
+
+func SetHook(hook logrus.Hook) {
+	for _, l := range loggers {
+		l.AddHook(hook)
+	}
 }
 
 // LogNameHook is a logrus hook to a

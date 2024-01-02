@@ -151,7 +151,7 @@ func returnVisitor(c *gin.Context, fsVisitor *client.Visitor, err error) {
 func main() {
 	log.Println("Setting log level")
 	logging.SetLevel(logrus.DebugLevel)
-	logging.SetOuput(memLog)
+	logging.SetOutput(memLog)
 	router := gin.Default()
 	store := cookie.NewStore([]byte("fs-go-sdk-demo-secret"))
 	router.Use(sessions.Sessions("fs-go-sdk-demo", store))
