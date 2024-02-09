@@ -196,7 +196,8 @@ func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID stri
 	for _, c := range decisionResponse.Campaigns {
 		campaign := model.Campaign{
 			ID:               c.Id.Value,
-			Type: c.Type.Value,
+			Type:             c.Type.Value,
+			Slug:             &c.Slug.Value,
 			VariationGroupID: c.VariationGroupId.Value,
 			Variation: model.ClientVariation{
 				ID:        c.Variation.Id.Value,
@@ -223,7 +224,7 @@ func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID stri
 			VariationID:      c.Variation.Id.Value,
 			Activated:        alreadyActivated,
 			FlagKeys:         keys,
-			Type: 					 	c.Type.Value,
+			Type:             c.Type.Value,
 		}
 	}
 
