@@ -217,33 +217,33 @@ func (r *APIClient) ActivateCampaign(request model.ActivationHit) error {
 
 // SendEvent sends an event to flagship Event endpoint
 func (r *APIClient) SendEvent(request model.Event) error {
-	errs := request.Validate()
+	// errs := request.Validate()
 
-	if len(errs) > 0 {
-		errorStrings := []string{}
-		for _, e := range errs {
-			apiLogger.Error("Send event validation error", e)
-			errorStrings = append(errorStrings, e.Error())
-		}
-		return fmt.Errorf("Invalid send hit : %s", strings.Join(errorStrings, ", "))
-	}
+	// if len(errs) > 0 {
+	// 	errorStrings := []string{}
+	// 	for _, e := range errs {
+	// 		apiLogger.Error("Send event validation error", e)
+	// 		errorStrings = append(errorStrings, e.Error())
+	// 	}
+	// 	return fmt.Errorf("Invalid send hit : %s", strings.Join(errorStrings, ", "))
+	// }
 
-	b, err := json.Marshal(request)
+	// b, err := json.Marshal(request)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
-	apiLogger.Debugf("Sending event to API: %s", string(b))
-	resp, err := r.httpClient.Call(fmt.Sprintf("/%s/events", r.envID), "POST", b, nil)
+	// apiLogger.Debugf("Sending event to API: %s", string(b))
+	// resp, err := r.httpClient.Call(fmt.Sprintf("/%s/events", r.envID), "POST", b, nil)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
-	if resp.StatusCode != 204 {
-		return fmt.Errorf("Error when calling activation API : %v", err)
-	}
+	// if resp.StatusCode != 204 {
+	// 	return fmt.Errorf("Error when calling activation API : %v", err)
+	// }
 
 	return nil
 }
