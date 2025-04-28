@@ -197,7 +197,6 @@ func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID stri
 		campaign := model.Campaign{
 			ID:               c.Id.Value,
 			Type:             c.Type.Value,
-			Slug:             &c.Slug.Value,
 			VariationGroupID: c.VariationGroupId.Value,
 			Variation: model.ClientVariation{
 				ID:        c.Variation.Id.Value,
@@ -208,6 +207,12 @@ func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID stri
 				},
 			},
 		}
+
+		// Only add Slug if c.Slug is not null
+		if c.Slug != nil {
+			campaign.Slug = &c.Slug.Value
+		}
+
 		resp.Campaigns = append(resp.Campaigns, campaign)
 
 		keys := make([]string, 0, len(c.Variation.Modifications.Value.AsMap()))
