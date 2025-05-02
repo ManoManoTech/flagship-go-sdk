@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	bucketingProto "github.com/flagship-io/flagship-common/proto"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/logging"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/utils"
-	bucketingProto "github.com/flagship-io/flagship-proto/bucketing"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 

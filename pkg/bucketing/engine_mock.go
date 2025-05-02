@@ -1,10 +1,10 @@
 package bucketing
 
 import (
+	bucketing "github.com/flagship-io/flagship-common/proto"
+	decision_response "github.com/flagship-io/flagship-common/proto"
+	targetingTypes "github.com/flagship-io/flagship-common/proto"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/cache"
-	"github.com/flagship-io/flagship-proto/bucketing"
-	"github.com/flagship-io/flagship-proto/decision_response"
-	targetingTypes "github.com/flagship-io/flagship-proto/targeting"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
