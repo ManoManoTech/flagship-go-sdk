@@ -205,6 +205,7 @@ func (b *Engine) GetModificationsWithContext(ctx context.Context, visitorID stri
 					Type:  c.Variation.Modifications.Type.String(),
 					Value: c.Variation.Modifications.Value.AsMap(),
 				},
+				Allocation: c.Variation.Allocation,
 			},
 		}
 

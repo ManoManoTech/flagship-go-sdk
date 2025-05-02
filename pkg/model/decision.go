@@ -45,6 +45,7 @@ type ClientVariation struct {
 	ID            string       `json:"id"`
 	Modifications Modification `json:"modifications"`
 	Reference     bool         `json:"reference"`
+	Allocation    float32      `json:"allocation"`
 }
 
 // Modification represents a decision campaign variation modification
