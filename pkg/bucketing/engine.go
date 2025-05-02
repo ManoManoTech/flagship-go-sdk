@@ -6,11 +6,11 @@ import (
 	"time"
 
 	common "github.com/flagship-io/flagship-common"
+	bucketingProto "github.com/flagship-io/flagship-common/proto"
 	"github.com/flagship-io/flagship-common/targeting"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/cache"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/logging"
 	"github.com/flagship-io/flagship-go-sdk/v2/pkg/model"
-	bucketingProto "github.com/flagship-io/flagship-proto/bucketing"
 )
 
 var logger = logging.CreateLogger("Bucketing Engine")

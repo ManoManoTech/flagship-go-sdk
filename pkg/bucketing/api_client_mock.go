@@ -1,6 +1,6 @@
 package bucketing
 
-import "github.com/flagship-io/flagship-proto/bucketing"
+import bucketing "github.com/flagship-io/flagship-common/proto"
 
 // APIClientMock represents the API client mock informations
 type APIClientMock struct {

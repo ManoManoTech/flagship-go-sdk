@@ -4,8 +4,7 @@ import (
 	"time"
 
 	common "github.com/flagship-io/flagship-common"
-	"github.com/flagship-io/flagship-proto/bucketing"
-	"github.com/flagship-io/flagship-proto/decision_response"
+	"github.com/flagship-io/flagship-common/proto"
 )
 
 // APIOptions represents the options for the Decision API Client
@@ -60,7 +59,7 @@ type FlagInfos struct {
 	Campaign Campaign
 }
 
-func VariationToCommonStruct(v *decision_response.FullVariation) *common.Variation {
+func VariationToCommonStruct(v *proto.FullVariation) *common.Variation {
 	return &common.Variation{
 		ID:            v.Id.Value,
 		Reference:     v.Reference,
@@ -69,7 +68,7 @@ func VariationToCommonStruct(v *decision_response.FullVariation) *common.Variati
 	}
 }
 
-func VariationGroupToCommonStruct(vg *bucketing.Bucketing_BucketingVariationGroups, campaign *bucketing.Bucketing_BucketingCampaign) *common.VariationGroup {
+func VariationGroupToCommonStruct(vg *proto.Bucketing_BucketingVariationGroups, campaign *proto.Bucketing_BucketingCampaign) *common.VariationGroup {
 	variations := []*common.Variation{}
 	for _, v := range vg.Variations {
 		variations = append(variations, VariationToCommonStruct(v))
@@ -90,7 +89,7 @@ func VariationGroupToCommonStruct(vg *bucketing.Bucketing_BucketingVariationGrou
 	}
 }
 
-func CampaignToCommonStruct(c *bucketing.Bucketing_BucketingCampaign) *common.Campaign {
+func CampaignToCommonStruct(c *proto.Bucketing_BucketingCampaign) *common.Campaign {
 	variationGroups := []*common.VariationGroup{}
 	for _, vg := range c.VariationGroups {
 		variationGroups = append(variationGroups, VariationGroupToCommonStruct(vg, c))
